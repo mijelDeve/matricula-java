@@ -1,0 +1,89 @@
+# Ignorar archivos de compilación y carpetas generadas
+/build/
+/build.xml
+
+# Ignorar archivos de configuración específicos de NetBeans
+/nbproject/private/
+/nbproject/BuildImpl.xml
+/nbproject/genfiles.properties
+
+# Ignorar el archivo de manifiesto generado
+/manifest.mf
+
+# Ignorar configuraciones de sistema específicas
+.DS_Store
+Thumbs.db
+
+# Ignorar archivos de metadatos del sistema
+*.log
+*.tmp
+
+# Ignorar clases y artefactos compilados
+*.class
+*.jar
+*.war
+*.ear
+
+# Ignorar directorios de salida de pruebas o temporales
+/test-output/
+/out/
+/tmp/
+
+# Ignorar IDEs comunes
+### IntelliJ IDEA ###
+.idea/
+*.iml
+*.iws
+
+### Eclipse ###
+.project
+.classpath
+.settings/
+
+### VS Code ###
+.vscode/
+# Ignorar archivos de compilación y carpetas generadas
+/build/
+/build.xml
+
+# Ignorar archivos de configuración específicos de NetBeans
+/nbproject/private/
+/nbproject/BuildImpl.xml
+/nbproject/genfiles.properties
+
+# Ignorar el archivo de manifiesto generado
+/manifest.mf
+
+# Ignorar configuraciones de sistema específicas
+.DS_Store
+Thumbs.db
+
+# Ignorar archivos de metadatos del sistema
+*.log
+*.tmp
+
+# Ignorar clases y artefactos compilados
+*.class
+*.jar
+*.war
+*.ear
+
+# Ignorar directorios de salida de pruebas o temporales
+/test-output/
+/out/
+/tmp/
+
+# Ignorar IDEs comunes
+### IntelliJ IDEA ###
+.idea/
+*.iml
+*.iws
+
+### Eclipse ###
+.project
+.classpath
+.settings/
+
+### VS Code ###
+.vscode/
+

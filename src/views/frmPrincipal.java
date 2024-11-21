@@ -1,6 +1,7 @@
 package views;
 
 import controllers.SidebarController;
+import controllers.CursosController;
 import models.AlumnoModel;
 
 import javax.swing.*;
@@ -15,7 +16,7 @@ public class frmPrincipal extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLayout(new BorderLayout());
-        
+
         // MODELO ALUMNO INICIALIZADO
         AlumnoModel alumnoModel = new AlumnoModel();
         // SIDEBAR VIEW INICIALIZADO
@@ -23,7 +24,7 @@ public class frmPrincipal extends JFrame {
         // SIDEBAR CONTROLLER INICIALIZADO
         sidebarController = new SidebarController(alumnoModel, sidebarView);
 
-        //  AGREGAMOS SIDEBAR
+        // AGREGAMOS SIDEBAR
         add(sidebarView, BorderLayout.WEST);
 
         // PANEL DERECHO INICIALIZADO
@@ -35,6 +36,11 @@ public class frmPrincipal extends JFrame {
         CursosTable cursosTable = new CursosTable();
         contentPanel.add(cursosTable, BorderLayout.CENTER);
         contentPanel.add(new JLabel("Bienvenido al Aula Virtual"), BorderLayout.NORTH);
+
+        // CONTROLADOR DE CURSOS INICIALIZADO Y CARGAR CURSOS
+        CursosController cursosController = new CursosController(cursosTable);
+        cursosController.cargarCursos();  // Cargar los cursos en la tabla
+
         add(contentPanel, BorderLayout.CENTER);
 
         setVisible(true);

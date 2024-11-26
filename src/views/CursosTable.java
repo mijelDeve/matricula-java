@@ -8,6 +8,7 @@ import controllers.SeccionesCursoController;
 import controllers.MatriculaController;
 import models.SeccionesCursoModel;
 import java.util.List;
+import models.HorarioModel;
 
 
 public class CursosTable extends JPanel {
@@ -41,6 +42,7 @@ public class CursosTable extends JPanel {
         scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0)); // Sin margen en la tabla
         combinedPanel.add(scrollPane);
 
+        
         CalendarioPanel calendarioPanel = new CalendarioPanel();
         calendarioPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0)); // Sin margen en el calendario
         combinedPanel.add(calendarioPanel);
@@ -107,7 +109,7 @@ public class CursosTable extends JPanel {
                 try {
                     String value = table.getValueAt(table.getSelectedRow(), 0).toString();
                     System.err.println(value);
-                    int idAlumno = 1;
+                    int idAlumno = 2;
                     MatriculaController controller = new MatriculaController();
                     boolean success = controller.registrarMatricula(idAlumno, Integer.parseInt(value));
                     

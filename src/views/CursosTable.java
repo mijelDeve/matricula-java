@@ -14,6 +14,7 @@ import models.HorarioModel;
 public class CursosTable extends JPanel {
     private JTable table;
     private DefaultTableModel tableModel;
+    private CalendarioPanel calendarioPanel = new CalendarioPanel();
 
     public CursosTable() {
         setLayout(new BorderLayout());
@@ -32,7 +33,7 @@ public class CursosTable extends JPanel {
 
         TableColumn actionColumn = table.getColumnModel().getColumn(6);
         actionColumn.setCellRenderer(new ButtonRenderer());
-        actionColumn.setCellEditor(new ButtonEditor(new JCheckBox()));
+        actionColumn.setCellEditor(new ButtonEditor(new JCheckBox(), calendarioPanel));
 
         cargarDatosEnTabla();
 
@@ -43,7 +44,6 @@ public class CursosTable extends JPanel {
         combinedPanel.add(scrollPane);
 
         
-        CalendarioPanel calendarioPanel = new CalendarioPanel();
         calendarioPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0)); // Sin margen en el calendario
         combinedPanel.add(calendarioPanel);
 
@@ -86,9 +86,12 @@ public class CursosTable extends JPanel {
         private String label;
         private boolean isPushed;
         private JTable table;
+        private CalendarioPanel calendarioPanel; // Instancia de CalendarioPanel
 
-        public ButtonEditor(JCheckBox checkBox) {
+
+        public ButtonEditor(JCheckBox checkBox, CalendarioPanel calendarioPanel) {
             super(checkBox);
+            this.calendarioPanel = calendarioPanel; // Asignamos la instancia recibida
             button = new JButton();
             button.setOpaque(true);
             button.addActionListener((ActionEvent e) -> fireEditingStopped());
@@ -115,6 +118,7 @@ public class CursosTable extends JPanel {
                     
                     if (success) {
                         JOptionPane.showMessageDialog(null, "Matrícula registrada con éxito.");
+                        calendarioPanel.cargarHorarios(2); // Acceso a calendarioPanel sin problema
                     } else {
                         JOptionPane.showMessageDialog(null, "Error al registrar la matrícula.");
                     }

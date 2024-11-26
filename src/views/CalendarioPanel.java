@@ -4,43 +4,36 @@ import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import models.HorarioModel;
 import java.util.List;
+import models.HorarioModel;
 import models.CursoCalendar;
 
 public class CalendarioPanel extends JPanel {
+    
+    private List<CursoCalendar> cursosCalendar = new ArrayList<>();
+    
     public CalendarioPanel() {
-        setLayout(new GridLayout(1, 7)); // Una fila para los días
-        
-        int idAlumno = 2;
-        List<CursoCalendar> cursosCalendar = null;
+        setLayout(new GridLayout(1, 7));
+        cargarHorarios(2); 
+    }
 
+    // Método para cargar los horarios
+    public void cargarHorarios(int idAlumno) {
         try {
             cursosCalendar = new HorarioModel().obtenerHorariosAlumno(idAlumno);
-            System.err.println("Inicio cursos");
-            System.err.println(cursosCalendar);
-            System.err.println("Cursos");
+            renderizarCalendario();
         } catch (SQLException e) {
-            e.printStackTrace(); // Imprimir el error para depuración
+            e.printStackTrace();
         }
-       
+    }
+
+    // Método para renderizar los cursos en el calendario
+    public void renderizarCalendario() {
+        System.err.println("Volver a renderizar");
+        removeAll();
         
-
-
         String[] dias = {"Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"};
         Object[][] cursosPorDia = obtenerCursosPorDia(cursosCalendar);
-        
-        /*
-        Object[][] cursosPorDia = {
-            {new CursoCalendar("Matemáticas", "A", "8:00 AM")}, // Lunes
-            {new CursoCalendar("Historia", "B", "10:00 AM"), new CursoCalendar("Ciencias", "C", "2:00 PM")}, // Martes
-            {new CursoCalendar("Física", "A", "9:00 AM")}, // Miércoles
-            {new CursoCalendar("Biología", "C", "11:00 AM")}, // Jueves
-            {new CursoCalendar("Química", "B", "3:00 PM")}, // Viernes
-            {}, // Sábado
-            {}  // Domingo
-        };
-        */
 
         for (int i = 0; i < dias.length; i++) {
             JPanel diaPanel = new JPanel();
@@ -86,9 +79,13 @@ public class CalendarioPanel extends JPanel {
 
             add(diaPanel);
         }
+
+        // Actualizar la interfaz para mostrar los cambios
+        revalidate();
+        repaint();
     }
-    
-    
+
+    // Método para obtener los cursos agrupados por día
     public Object[][] obtenerCursosPorDia(List<CursoCalendar> cursosCalendar) {
         Object[][] cursosPorDia = new Object[7][]; // 7 días: Lunes a Domingo
 
@@ -142,8 +139,4 @@ public class CalendarioPanel extends JPanel {
 
         return cursosPorDia;
     }
-
-
-    // Clase auxiliar para manejar los datos del curso
-    
 }

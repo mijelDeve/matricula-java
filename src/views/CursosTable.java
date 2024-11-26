@@ -4,6 +4,10 @@ import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import controllers.SeccionesCursoController;
+import models.SeccionesCursoModel;
+import java.util.List;
+
 
 public class CursosTable extends JPanel {
     private JTable table;
@@ -12,14 +16,15 @@ public class CursosTable extends JPanel {
     public CursosTable() {
         setLayout(new BorderLayout());
 
-        String[] columnNames = {"Curso", "Turno", "Sección", "Días", "Acción"};
+        String[] columnNames = {"Nombre Curso", "Código Curso", "Créditos", "Código Sección", "Cupos", "Acción"};
 
+        // Configuración del modelo de tabla
         tableModel = new DefaultTableModel(columnNames, 0);
         table = new JTable(tableModel) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 // Hacer que solo la columna de botones sea editable
-                return column == 4;
+                return column == 5;
             }
         };
 
@@ -27,7 +32,7 @@ public class CursosTable extends JPanel {
         actionColumn.setCellRenderer(new ButtonRenderer());
         actionColumn.setCellEditor(new ButtonEditor(new JCheckBox()));
 
-        addSampleData();
+        cargarDatosEnTabla();
 
         JPanel combinedPanel = new JPanel(new GridLayout(2, 1));
 
@@ -42,15 +47,19 @@ public class CursosTable extends JPanel {
         add(combinedPanel, BorderLayout.CENTER);
     }
 
-    private void addSampleData() {
-        String[][] data = {
-            {"Matemáticas", "Mañana", "A", "Lunes, Miércoles"},
-            {"Historia", "Tarde", "B", "Martes, Jueves"},
-            {"Ciencias", "Noche", "C", "Lunes, Viernes"},
-        };
+   private void cargarDatosEnTabla() {
+        SeccionesCursoController controller = new SeccionesCursoController();
+        List<SeccionesCursoModel> seccionesCurso = controller.obtenerSeccionesCurso();
 
-        for (String[] curso : data) {
-            Object[] rowData = {curso[0], curso[1], curso[2], curso[3], "Agregar"};
+        for (SeccionesCursoModel sc : seccionesCurso) {
+            Object[] rowData = {
+                sc.getNombreCurso(),
+                sc.getCodigoCurso(),
+                sc.getCreditos(),
+                sc.getCodigoSeccion(),
+                sc.getCupos(),
+                "Agregar" // Botón para agregar
+            };
             tableModel.addRow(rowData);
         }
     }

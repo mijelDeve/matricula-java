@@ -5,6 +5,7 @@ import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import controllers.SeccionesCursoController;
+import controllers.MatriculaController;
 import models.SeccionesCursoModel;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class CursosTable extends JPanel {
     public CursosTable() {
         setLayout(new BorderLayout());
 
-        String[] columnNames = {"Nombre Curso", "Código Curso", "Créditos", "Código Sección", "Cupos", "Acción"};
+        String[] columnNames = {"Id Sección","Nombre Curso", "Código Curso", "Créditos", "Código Sección", "Cupos", "Acción"};
 
         // Configuración del modelo de tabla
         tableModel = new DefaultTableModel(columnNames, 0);
@@ -24,11 +25,11 @@ public class CursosTable extends JPanel {
             @Override
             public boolean isCellEditable(int row, int column) {
                 // Hacer que solo la columna de botones sea editable
-                return column == 5;
+                return column == 6;
             }
         };
 
-        TableColumn actionColumn = table.getColumnModel().getColumn(4);
+        TableColumn actionColumn = table.getColumnModel().getColumn(6);
         actionColumn.setCellRenderer(new ButtonRenderer());
         actionColumn.setCellEditor(new ButtonEditor(new JCheckBox()));
 
@@ -53,6 +54,7 @@ public class CursosTable extends JPanel {
 
         for (SeccionesCursoModel sc : seccionesCurso) {
             Object[] rowData = {
+                sc.getIdSeccion(),
                 sc.getNombreCurso(),
                 sc.getCodigoCurso(),
                 sc.getCreditos(),
@@ -81,6 +83,7 @@ public class CursosTable extends JPanel {
         private JButton button;
         private String label;
         private boolean isPushed;
+        private JTable table;
 
         public ButtonEditor(JCheckBox checkBox) {
             super(checkBox);
@@ -91,6 +94,7 @@ public class CursosTable extends JPanel {
 
         @Override
         public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+            this.table = table;
             label = (value == null) ? "" : value.toString();
             button.setText(label);
             isPushed = true;
@@ -100,13 +104,28 @@ public class CursosTable extends JPanel {
         @Override
         public Object getCellEditorValue() {
             if (isPushed) {
-                // Acción del botón
-                System.out.println("Curso agregado al horario: " + label);
-                // Aquí puedes añadir la lógica para actualizar el calendario
+                try {
+                    String value = table.getValueAt(table.getSelectedRow(), 0).toString();
+                    System.err.println(value);
+                    int idAlumno = 1;
+                    MatriculaController controller = new MatriculaController();
+                    boolean success = controller.registrarMatricula(idAlumno, Integer.parseInt(value));
+                    
+                    if (success) {
+                        JOptionPane.showMessageDialog(null, "Matrícula registrada con éxito.");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Error al registrar la matrícula.");
+                    }
+
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "Ocurrió un error al registrar la matrícula.");
+                    e.printStackTrace();
+                }
             }
             isPushed = false;
             return label;
         }
+        
 
         @Override
         public boolean stopCellEditing() {
@@ -114,4 +133,5 @@ public class CursosTable extends JPanel {
             return super.stopCellEditing();
         }
     }
+
 }

@@ -7,6 +7,7 @@ import utils.ConexionBD;
 
 
 public class SeccionesCursoModel {
+    private int idSeccion;
     private String nombreCurso;
     private String codigoCurso;
     private int creditos;
@@ -14,7 +15,8 @@ public class SeccionesCursoModel {
     private int cupos;
 
     // Constructor
-    public SeccionesCursoModel(String nombreCurso, String codigoCurso, int creditos, String codigoSeccion, int cupos) {
+    public SeccionesCursoModel(int idSeccion, String nombreCurso, String codigoCurso, int creditos, String codigoSeccion, int cupos) {
+        this.idSeccion = idSeccion;
         this.nombreCurso = nombreCurso;
         this.codigoCurso = codigoCurso;
         this.creditos = creditos;
@@ -23,6 +25,14 @@ public class SeccionesCursoModel {
     }
 
     // Getters y setters
+    public int getIdSeccion() {
+        return idSeccion;
+    }
+    
+    public void setIdSeccion(int idSeccion) {
+        this.idSeccion = idSeccion;
+    }
+    
     public String getNombreCurso() {
         return nombreCurso;
     }
@@ -63,7 +73,6 @@ public class SeccionesCursoModel {
         this.cupos = cupos;
     }
 
-    // Método estático para cargar datos desde la base de datos
     public static List<SeccionesCursoModel> cargarDatosSeccionesCurso() {
         List<SeccionesCursoModel> seccionesCurso = new ArrayList<>();
         String query = """
@@ -71,6 +80,7 @@ public class SeccionesCursoModel {
                 c.nombre AS nombre_curso,
                 c.codigo AS codigo_curso,
                 c.creditos,
+                s.id_seccion,
                 s.codigo_seccion,
                 s.cupo
             FROM 
@@ -91,9 +101,10 @@ public class SeccionesCursoModel {
                 int creditos = resultSet.getInt("creditos");
                 String codigoSeccion = resultSet.getString("codigo_seccion");
                 int cupos = resultSet.getInt("cupo");
+                int idSeccion = resultSet.getInt("id_seccion");
 
                 // Crear una instancia de SeccionesCursoModel y agregarla a la lista
-                seccionesCurso.add(new SeccionesCursoModel(nombreCurso, codigoCurso, creditos, codigoSeccion, cupos));
+                seccionesCurso.add(new SeccionesCursoModel(idSeccion, nombreCurso, codigoCurso, creditos, codigoSeccion, cupos));
             }
 
         } catch (SQLException e) {

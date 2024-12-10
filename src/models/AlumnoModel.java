@@ -80,4 +80,35 @@ public class AlumnoModel {
             }
         }
     }
+    
+     public boolean login(String email, String password) {
+        System.out.println("Login");
+        System.out.println(email);
+        System.out.println(password);
+
+       if (!email.equals(password)) {
+            System.err.println("No coincide el email y password");
+            return false;
+        }
+         
+        Connection connection = ConexionBD.getConnectionBD();
+        if (connection != null) {
+            try {
+                String query = "SELECT COUNT(*) FROM Alumno WHERE email = ?";
+                PreparedStatement statement = connection.prepareStatement(query);
+                statement.setString(1, email);
+
+                ResultSet resultSet = statement.executeQuery();
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0; // Retorna true si encuentra al alumno
+                }
+                resultSet.close();
+                statement.close();
+            } catch (SQLException e) {
+                System.err.println(e);
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
 }
